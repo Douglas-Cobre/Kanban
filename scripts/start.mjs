@@ -1,35 +1,21 @@
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { askCredential } from './credentials.mjs';
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 const cwd = fileURLToPath(new URL('../', import.meta.url));
 const windows = process.platform === 'win32';
 const options = process.argv.slice(2);
-if (options.some(option => !['--mysql', '--demo'].includes(option)) || (options.includes('--mysql') && options.includes('--demo'))) {
-  console.error('Uso: node scripts/start.mjs [--mysql | --demo]');
+if (options.some(option => option !== '--sqlite') || options.length > 1) {
+  console.error('Uso: node scripts/start.mjs [--sqlite]');
   process.exit(1);
 }
-const demo = options.includes('--demo');
-const serverEnv = { ...process.env };
-if (!demo) {
-  try {
-    if (!serverEnv.DB_USER) {
-      serverEnv.DB_USER = (await askCredential('Usuário do MySQL: ')).trim();
-      if (!serverEnv.DB_USER) throw new Error('Informe o usuário da sua conexão MySQL.');
-    }
-    if (!Object.hasOwn(serverEnv, 'DB_PASSWORD')) {
-      serverEnv.DB_PASSWORD = await askCredential('Senha do MySQL (digitação oculta): ', { hidden: true });
-    }
-  } catch (error) {
-    console.error(error.message);
-    process.exit(1);
-  }
-}
-console.log(demo ? 'Banco selecionado: H2 (demo).' : 'Banco selecionado: MySQL. Conexão padrão: localhost:3306/kanban.');
-const mavenArgs = ['-B', 'spring-boot:run', `-Dspring-boot.run.profiles=${demo ? 'demo' : 'mysql'}`];
+await mkdir(resolve(cwd, 'data'), { recursive: true });
+console.log('Armazenamento selecionado: SQLite (data/kanban.db).');
+const mavenArgs = ['-B', 'spring-boot:run'];
 const server = windows
-  ? spawn('cmd.exe', ['/d', '/s', '/c', 'mvn ' + mavenArgs.join(' ')], { cwd, env: serverEnv, windowsHide: true, stdio: ['inherit', 'pipe', 'pipe'] })
-  : spawn('mvn', mavenArgs, { cwd, env: serverEnv, stdio: ['inherit', 'pipe', 'pipe'] });
+  ? spawn('cmd.exe', ['/d', '/s', '/c', 'mvn ' + mavenArgs.join(' ')], { cwd, env: process.env, windowsHide: true, stdio: ['inherit', 'pipe', 'pipe'] })
+  : spawn('mvn', mavenArgs, { cwd, env: process.env, stdio: ['inherit', 'pipe', 'pipe'] });
 
 let opened = false;
 let output = '';

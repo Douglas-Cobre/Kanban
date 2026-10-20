@@ -3,29 +3,10 @@
   "configurations": [
     {
       "type": "node-terminal",
-      "name": "Kanban — Front + Back (MySQL)",
+      "name": "Kanban — Front + Back (SQLite)",
       "request": "launch",
-      "command": "node scripts/start.mjs --mysql",
-      "cwd": "${workspaceFolder}",
-      "env": {
-        "DB_URL": "jdbc:mysql://localhost:3306/kanban",
-        "DB_USER": "${input:mysqlUser}",
-        "DB_PASSWORD": "${input:mysqlPassword}"
-      }
-    }
-  ],
-  "inputs": [
-    {
-      "id": "mysqlUser",
-      "type": "promptString",
-      "description": "Usuário com acesso ao banco kanban",
-      "default": "root"
-    },
-    {
-      "id": "mysqlPassword",
-      "type": "promptString",
-      "description": "Senha do MySQL",
-      "password": true
+      "command": "node scripts/start.mjs",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

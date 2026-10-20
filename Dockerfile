@@ -6,6 +6,7 @@ RUN mvn -B package
 
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
+RUN mkdir -p /app/data && chown 10001:10001 /app/data
 COPY --from=build --chown=10001:10001 /build/target/kanban-*.jar /app/kanban.jar
 USER 10001:10001
 EXPOSE 8080
