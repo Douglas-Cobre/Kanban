@@ -1,0 +1,8 @@
+br\com\portfolio\kanban\Status.class
+br\com\portfolio\kanban\TarefaRequest.class
+br\com\portfolio\kanban\TarefaController.class
+br\com\portfolio\kanban\TarefaRepository.class
+br\com\portfolio\kanban\Prioridade.class
+br\com\portfolio\kanban\TarefaService.class
+br\com\portfolio\kanban\KanbanApplication.class
+br\com\portfolio\kanban\Tarefa.class
