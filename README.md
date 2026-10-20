@@ -34,15 +34,15 @@ No Linux ou macOS, use `KANBAN_PORT=8081 docker compose up --build -d`.
 
 ## Executar localmente
 
-Requisitos: Node.js, Java 17 e Maven no PATH. Execute na pasta do projeto:
+Requisitos: Node.js e Java 17. O Maven Wrapper baixa o Maven na primeira execução, sem precisar instalá-lo no PATH. Execute na pasta do projeto:
 
 ```powershell
 node scripts/start.mjs
 ```
 
-O inicializador cria a pasta `data/`, inicia a aplicação e abre o navegador quando ela estiver pronta. O arquivo SQLite fica em `data/kanban.db`. No VS Code, pressione F5 e escolha **Kanban — Front + Back (SQLite)**.
+O inicializador cria a pasta `data/`, inicia a aplicação e abre o navegador quando ela estiver pronta. O arquivo SQLite fica em `data/kanban.db`. Na primeira vez, é necessária conexão com a internet para baixar Maven e as dependências. No VS Code, pressione F5 e escolha **Kanban — Front + Back (SQLite)**.
 
-Também é possível iniciar pelo Maven com `mvn spring-boot:run`, desde que a pasta `data/` exista.
+Também é possível iniciar pelo wrapper com `mvnw.cmd spring-boot:run` no Windows ou `./mvnw spring-boot:run` no Linux/macOS, desde que a pasta `data/` exista.
 
 ## Funcionalidades
 
